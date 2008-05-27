@@ -1,8 +1,9 @@
 === Magnify-Publisher-WP ===
 Contributors: magnify
 Tags: video
-Requires at least: 2.5
+Requires at least: 2.0
 Tested up to: 2.5.1
+Stable tag: 0.96
 
 The Magnify Publisher for WordPress enables you to access Magnify.net's powerful video discovery and multimedia capabilities within WordPress.
 

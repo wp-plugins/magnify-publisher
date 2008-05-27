@@ -1,6 +1,6 @@
 === Change History for Magnify-Publisher-WP ===
 
-May 21: Version 0.96 fixes javascript errors when closing inlinepopup windows
+May 21: Version 0.96 fixes javascript errors when closing inlinepopup windows. Provides support for 2.0 versions of WordPress.
 
 May 16: Version 0.95 fixes doubled hostname prefix on callback address. Provides support for earlier versions of WordPress.
 
