@@ -29,4 +29,6 @@ Copy or move the Magnify-Publisher folder to your local wp-content/plugins direc
 
 Use WordPress's "Plugins Management" page to enable the Publisher.
 
+Configure the Magnify Publisher plugin to use an existing Magnify channel or create a new channel.
+
 In the "visual" editor, click on the orange Magnify Publisher button to add videos and images to your blog post. 

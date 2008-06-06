@@ -4,7 +4,7 @@
 Plugin Name: Magnify-Publisher
 Plugin URI: http://www.magnify.net/wp/
 Description: Enables Magnify.net's video discovery and multimedia capabilities.
-Version: 0.96
+Version: 0.97
 Author: Magnify.net 
 Author URI: http://www.magnify.net/
 
@@ -26,7 +26,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
 
-$version = '0.96';
+$version = '0.97';
+
 global $wp_db_version;
 if ( $wp_db_version > 6124 ) {
 	$wpversion = 2.5;
@@ -36,13 +37,121 @@ if ( $wp_db_version > 6124 ) {
 	$wpversion = 2.0;	
 }
 
-add_option( 'magnify_publisher_channel_name', 'publisher.magnify.net' );
-# update_option( 'magnify_publisher_channel_name', $input );
-
 $target = 'WP-' . $wpversion . '-' . $version;
-$channel = get_option('magnify_publisher_channel_name');
-if ( ! $channel ) {
-  $channel = 'publisher.magnify.net';
+
+// If you hardcode a Magnify.net channel url here, all key config screens will be hidden
+$channel = '';
+
+function magnify_publisher_init() {
+	global $channel;
+
+	if ( !$channel )
+		$channel = get_option('magnify_publisher_channel_name');
+		
+	add_action('admin_menu', 'magnify_publisher_config_page');
+}
+add_action('init', 'magnify_publisher_init');
+
+function magnify_publisher_config_page() {
+	if ( function_exists('add_submenu_page') )
+		add_submenu_page('plugins.php', __('Magnify Publisher Configuration'), __('Magnify Publisher Configuration'), 'manage_options', 'magnify-publisher-channel-config', 'magnify_publisher_conf');
+}
+
+function magnify_publisher_fix_url($url) {
+	$url = preg_replace('!^(http|https)://!i', '', $url);
+	$url = preg_replace('!^/!i', '', $url);
+	$url = 'http://'.$url;
+	return $url;
+}
+
+function magnify_publisher_conf() {
+	$channel = get_option('magnify_publisher_channel_name');	
+	
+	$updated = false;
+	
+	if ( isset($_POST['submit']) ) {
+		check_admin_referer();
+		
+		if (isset($_POST['magnify_publisher_channel_name'])) {
+			$channel = $_POST['magnify_publisher_channel_name'];
+			if ($channel != null) $channel = magnify_publisher_fix_url($channel);
+		} else {
+			$channel = null;
+		}		
+		
+		update_option('magnify_publisher_channel_name', $channel);		
+		$updated = true;
+	}
+?>
+
+<div class="wrap">
+<?php
+if ($updated) {
+	echo "<div id='message' class='updated fade'><p>";
+	_e('Configuration updated.');
+	echo "</p></div>";
+}
+?>
+<h2><?php _e('Magnify Publisher Configuration'); ?></h2>
+
+<form action="" method="post" id="magnify-publisher-conf">
+<p><h3><label for="magnify_publisher_channel_name"><?php _e('Magnify  Channel for this Blog:'); ?></label></h3>
+<?php _e('Enter your channel\'s web address:'); ?> <input id="magnify_publisher_channel_name" name="magnify_publisher_channel_name" type="text" size="45" value="<?php echo $channel; ?>" /></p>
+
+<p class="submit" style="text-align: left">
+	<input type="submit" name="submit" value="<?php _e('Save &raquo;'); ?>" />
+<?php
+if ( $channel ) {
+?>
+<input type="button" onclick="mvp_publisher_show_form();" value="<?php _e('Create New Channel &raquo;'); ?>">
+<?php
+}
+?>
+</p>
+
+<div id="magnify_publisher_channel_creation" <?php if ($channel) { echo 'style="display: none;"'; } ?>>
+	<h3><label for="magnify_publisher_email"><?php _e('If you don\'t already have a channel, create one now:'); ?></label></h3>
+	<p><?php _e('Email Address:'); ?> <input id="magnify_publisher_email" name="magnify_publisher_email" type="text" size="30" value="" /> <?php _e('Choose a Password:'); ?> <input id="magnify_publisher_pass" name="magnify_publisher_pass" type="password" size="10" value="" /></p>
+	<div style="color: red" id="magnify_publisher_create_msg"></div>
+	<p class="submit" id="magnify_publisher_channel_create_btn" style="text-align: left"><input type="button" onclick="mvp_publisher_create_channel( document.getElementById('magnify_publisher_email').value, document.getElementById('magnify_publisher_pass').value )" value="<?php _e('Create New Channel'); ?>" /></p>
+</div>
+</form>
+</div>
+
+<script type="text/javascript">
+function mvp_publisher_show_form() {
+	document.getElementById('magnify_publisher_channel_creation').style.display = 'block';
+}
+function mvp_publisher_create_success(channel_name) {
+	document.getElementById('magnify_publisher_channel_name').value = channel_name;
+	document.getElementById('magnify_publisher_create_msg').innerHTML = 'Channel created; click the "Save Changes" button to preserve this address.'; 
+	document.getElementById('magnify_publisher_email').value = '';
+	document.getElementById('magnify_publisher_pass').value = '';
+	document.getElementById('magnify_publisher_channel_create_btn').style.display = 'none';
+	document.getElementById('magnify_publisher_channel_creation').style.display = 'none';
+}
+function mvp_publisher_create_error(err_text) {
+	document.getElementById('magnify_publisher_create_msg').innerHTML = err_text;
+}
+function mvp_publisher_create_channel(email, pass) {
+	var head = document.getElementsByTagName("head")[0];
+	var script_el = document.createElement('script');
+	script_el.type = 'text/javascript';
+	script_el.src = 'http://www.magnify.net/wp/create?email=' + escape(email) + '&pass=' + escape(pass);
+	head.appendChild(script_el);
+}
+</script>
+<?php
+}
+
+if ( !get_option('magnify_publisher_channel_name') && !$channel && !isset($_POST['submit']) ) {
+	function magnify_publisher_warning() {
+		echo "
+		<div id='magnify-publisher-warning' class='updated fade'><p>".sprintf(__('You must <a href="%1$s">create a Magnify channel or enter your Magnify channel url</a> for the Magnify Publisher plugin to work.'), "plugins.php?page=magnify-publisher-channel-config")."</p></div>
+		";
+	}
+	add_action('admin_notices', 'magnify_publisher_warning');
+	return;
 }
 
 // init process for button control
@@ -94,7 +203,7 @@ function magnify_publisher_add_params() {
 	global $target;
 	global $channel;
 	echo 'magnify_publisher_target : "' . $target . '",';
-	echo 'magnify_publisher_url : ' . '"http://' . $channel . '",';
+	echo 'magnify_publisher_url : "' . $channel . '",';
 }
 
 function magnify_publisher_add_valid_elements($valid_elements) {
@@ -122,7 +231,7 @@ function magnify_tinymce3_before_init($init_array) {
 	global $channel;
 	global $wpversion;
 	$init_array['magnify_publisher_target'] = $target;
-	$init_array['magnify_publisher_url'] = 'http://' . $channel;
+	$init_array['magnify_publisher_url'] = $channel;
 	$init_array['extended_valid_elements'] = 'img[*],' . $init_array['extended_valid_elements'];
 	return $init_array;	
 }
