@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html>
+<head>		
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Magnify Publisher</title>
+	<script type="text/javascript" charset="utf-8">
+		var mce_library = window.parent.tinyMCE;
+		var mce_editor = mce_library.activeEditor;
+	
+		var mce_popup_js = window.parent.tinyMCE.activeEditor.baseURI.toAbsolute('tiny_mce_popup.js');
+		document.write('<script type="text/javascript" src="'+mce_popup_js+'"><\/script>');
+	</script>
+	<script type="text/javascript" src="js/magnify_publisher.js"></script>
+</head>
+<body style="margin: 0px">
+	Please ensure that you have configured your tinyMCE editor properly and try again.
+	<script type="text/javascript">
+		var params = {};
+		var query = window.location.search.substring(1);
+		query = query.replace(/[+]/g, ' ');
+		var vars = query.split("&");
+		for (var i=0; i<vars.length; i++) {
+		  var pair = vars[i].split("=");
+			params[ unescape(pair[0]) ] = (pair.length==2) ? unescape(pair[1]) : "";
+		} 
+
+		ed = mce_editor;
+		mvp_publisher_embed( params );
+	</script>
+</body>
+</html>

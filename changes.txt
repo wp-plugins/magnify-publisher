@@ -1,0 +1,21 @@
+=== Change History for Magnify-Publisher-WP ===
+
+May 21: Version 0.96 fixes javascript errors when closing inlinepopup windows
+
+May 16: Version 0.95 fixes doubled hostname prefix on callback address. Provides support for earlier versions of WordPress.
+
+May 16: Version 0.94 fixes detection of base WordPress install path.
+
+May 15: Release 0.93 fixes Internet Explorer issue introduced in 0.91.
+
+May 14: Release 0.92 fixes Mac webcam Flash segfault issue.
+
+May 14: Release 0.91 relocated TinyMCE folder to simplify installation. 
+
+  (If you had previously installed an earlier version of the Magnify
+  Publisher for WordPress, which asked you to copy a magnify_publisher
+  folder into your wp-includes/js/tinymce/plugins, you can now delete
+  that magnify_publisher folder as the latest version is now packaged
+  within the main Magnify-Publisher package.)
+  
+May 13: Initial pre-release distribution posted.
