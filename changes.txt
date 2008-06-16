@@ -1,5 +1,7 @@
 === Change History for Magnify-Publisher-WP ===
 
+June 16: Version 0.98 addresses capitalization issues with plugin auto-update distribution: changed references to /wp-content/plugins/Magnify-Publisher/ to /wp-content/plugins/magnify-publisher/.
+
 June 6: Version 0.97 adds support for configuring or creating your own Magnify channel to power Magnify Publisher.
 
 May 21: Version 0.96 fixes javascript errors when closing inlinepopup windows. Provides support for 2.0 versions of WordPress.

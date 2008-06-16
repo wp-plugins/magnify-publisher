@@ -3,7 +3,7 @@ Contributors: magnify
 Tags: video
 Requires at least: 2.0
 Tested up to: 2.5.1
-Stable tag: 0.97
+Stable tag: 0.98
 
 The Magnify Publisher for WordPress enables you to access Magnify.net's powerful video discovery and multimedia capabilities within WordPress.
 
@@ -25,7 +25,7 @@ For more information, visit http://www.magnify.net/wp/
 
 Download and unpack the distribution archive.
 
-Copy or move the Magnify-Publisher folder to your local wp-content/plugins directory.
+Copy or move the magnify-publisher folder to your local wp-content/plugins directory.
 
 Use WordPress's "Plugins Management" page to enable the Publisher.
 
