@@ -4,7 +4,7 @@
 Plugin Name: Magnify-Publisher
 Plugin URI: http://www.magnify.net/wp/
 Description: Enables Magnify.net's video discovery and multimedia capabilities.
-Version: 0.97
+Version: 0.98
 Author: Magnify.net 
 Author URI: http://www.magnify.net/
 
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
 
-$version = '0.97';
+$version = '0.98';
 
 global $wp_db_version;
 if ( $wp_db_version > 6124 ) {
@@ -189,7 +189,7 @@ function magnify_publisher_register_button($buttons) {
 
 function magnify_publisher_add_tinymce_ext_plugin($plugin_array) {	
 	$plugin_array['magnify_publisher'] = get_bloginfo('wpurl') . 
-		 	'/wp-content/plugins/Magnify-Publisher' . "/tinymce_3/editor_plugin.js";
+		 	'/wp-content/plugins/magnify-publisher' . "/tinymce_3/editor_plugin.js";
 	return $plugin_array;
 }
 
@@ -223,7 +223,7 @@ function magnify_publisher_mce_version($ver) {
 function magnify_tinymce2_before_init() {
 	// WordPress 2.1
 	echo 'tinyMCE.loadPlugin("magnify_publisher", "' . get_bloginfo('wpurl') . 
-			'/wp-content/plugins/Magnify-Publisher' . '/tinymce_2/");';		
+			'/wp-content/plugins/magnify-publisher' . '/tinymce_2/");';		
 }
 
 function magnify_tinymce3_before_init($init_array) {
